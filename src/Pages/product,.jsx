@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import ProductCards from "../components/Card/ProductCards";
 import Button from "../components/Elements/Button/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Myproducts } from "../components/config";
 
 const email = localStorage.getItem("email");
 
 const ProductPage = () => {
   const navigate = useNavigate();
-
   const [product, setProduct] = useState([]);
   const [TotalPrice, setTotalPrice] = useState(0);
 
@@ -46,6 +45,17 @@ const ProductPage = () => {
     })
   };
 
+  const totalPriceRef = useRef(null);
+  
+  useEffect(() => {
+    if (product.length > 0){
+      totalPriceRef.current.style.display = "table-row"
+    }else {
+      totalPriceRef.current.style.display = "none"
+    }
+  }, [product]);
+
+ 
   const logOutHandler = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("password");
@@ -95,7 +105,7 @@ const ProductPage = () => {
                   <td>{(p.price * p.quantity).toLocaleString('id-ID', {style: 'currency', currency: "IDR"})}</td>
                 </tr>
               ))}
-              <tr>
+              <tr ref={totalPriceRef}>
                 <td className="font-bold" colSpan={3}>Total Price</td>
                 <td className="font-bold">{(TotalPrice).toLocaleString("id-ID", {style: "currency", currency: "IDR"})}</td>
               </tr>
