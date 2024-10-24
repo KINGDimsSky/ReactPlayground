@@ -3,14 +3,14 @@ import ProductCards from "../components/Card/ProductCards";
 import Button from "../components/Elements/Button/Button";
 import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../services/product.service";
-
-const email = localStorage.getItem("email");
+import { getUsername } from "../services/auth.service";
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [TotalPrice, setTotalPrice] = useState(0);
   const [product, setProduct] = useState([]);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const storedProducts = localStorage.getItem('product');
@@ -35,6 +35,15 @@ const ProductPage = () => {
     getProducts((data) => {
       setProduct(data)
     });
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token){
+      setUsername(getUsername(token));
+    }else{
+      navigate('login')
+    }
   }, [])
 
   const productHandler = (newProduct) => {
@@ -64,15 +73,14 @@ const ProductPage = () => {
 
  
   const logOutHandler = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
   return (
     <>
       <div className="flex justify-end h-16 bg-blue-600 text-white items-center px-10">
-        Hello, <span className="text-black font-semibold pl-2">{email}</span>
+        Hello, <span className="text-black font-semibold pl-2">{username}</span>
         <Button onClick={logOutHandler} className="bg-black px-2 mx-2">
           LogOut
         </Button>
