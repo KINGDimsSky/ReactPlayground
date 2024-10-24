@@ -13,11 +13,11 @@ const Body = ({children, title}) => {
     <div className="px-5 pb-5 h-full">
       <a href="">
         <h5 className="text-xl font-semibold tracking-tight text-white">
-          {title}
+          {title.substring(0, 20)}
         </h5>
       </a>
       <p className="text-sm text-white ">
-        {children}
+        {children.substring(0, 100)}
       </p>
     </div>
   );
@@ -32,10 +32,10 @@ const Footer = ({price, onClick}) => {
     )
 }
 
-const Header = () => {
+const Header = ({image}) => {
     return (
         <a href="" onClick={(e) => {e.preventDefault()}}>
-        <img src="/public/Shoes.jpg" alt="" className="p-8 rounded-t-lg" />
+        <img src={image} alt="" className="p-8 rounded-t-lg h-60 w-full object-cover" />
       </a>
     )
 }

@@ -7,7 +7,6 @@ const FormLogin = () => {
   const navigate = useNavigate();
 
   const misaleTest = useRef(null);
-  console.log (misaleTest.current)
 
   useEffect(() => {
     misaleTest.current.focus()
