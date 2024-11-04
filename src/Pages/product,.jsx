@@ -3,14 +3,14 @@ import ProductCards from "../components/Card/ProductCards";
 import Button from "../components/Elements/Button/Button";
 import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../services/product.service";
-import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
 
 const ProductPage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [TotalPrice, setTotalPrice] = useState(0);
   const [product, setProduct] = useState([]);
-  const [username, setUsername] = useState('');
+  const username = useLogin();
 
   useEffect(() => {
     const storedProducts = localStorage.getItem('product');
@@ -37,14 +37,6 @@ const ProductPage = () => {
     });
   }, [])
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token){
-      setUsername(getUsername(token));
-    }else{
-      navigate('login')
-    }
-  }, [])
 
   const productHandler = (newProduct) => {
     setCart((prevProduct) => {
