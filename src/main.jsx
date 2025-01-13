@@ -7,6 +7,7 @@ import Register from './Pages/register'
 import ErrorPage from './Pages/404'
 import ProductPage from './Pages/product,'
 import ProfilePage from './Pages/profile'
+import DetailProduct from './Pages/detailProduct'
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage/>
+  },
+  {
+    path: "/product/:id",
+    element: <DetailProduct/>
   }
 ])
 

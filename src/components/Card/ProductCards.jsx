@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../Elements/Button/Button";
 
 const ProductCards = ({children}) => {
@@ -32,11 +33,11 @@ const Footer = ({price, onClick}) => {
     )
 }
 
-const Header = ({image}) => {
+const Header = ({image, id}) => {
     return (
-        <a href="" onClick={(e) => {e.preventDefault()}}>
+        <Link to={`/product/${id}`}>
         <img src={image} alt="" className="p-8 rounded-t-lg h-60 w-full object-cover" />
-      </a>
+      </Link>
     )
 }
 

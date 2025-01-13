@@ -7,3 +7,11 @@ export const getProducts = (callback) => {
         throw new Error(err);
     })
 }
+
+export const getDetailProducts = (id, callback) => {
+    axios.get(`https://fakestoreapi.com/products/${id}`).then((res) => {
+        callback(res.data);
+    }).catch((error) => {
+        throw new Error(error);
+    })
+}
