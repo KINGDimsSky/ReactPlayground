@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { getDetailProducts } from "../services/product.service";
+import { addToCart } from "../redux/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useDarkMode } from "../hooks/DarkMode";
 
 
 const DetailProduct = () => {
   const {id} = useParams();
   const [product, setProduct] = useState({})
+  const dispatch = useDispatch()
+  const cart = useSelector((state) => state.cart.data)
+  const {IsDarkMode} = useDarkMode()
+
+  useEffect(() => {
+    cart.length ? localStorage.setItem('product', JSON.stringify(cart)) : null
+  }, [cart])
+
 
   useEffect(() => {
     getDetailProducts(id, (data) => {
@@ -16,7 +27,7 @@ const DetailProduct = () => {
 
 
   return (
-    <div className="w-100 min-h-screen flex justify-center items-center">
+    <div className={`w-100 min-h-screen flex justify-center items-center ${IsDarkMode && "bg-slate-900 text-white"}`}>
       {Object.keys(product).length > 0 && (
         <div className="flex font-sans max-w-xl">
         <div className="flex-none w-48 relative">
@@ -24,13 +35,13 @@ const DetailProduct = () => {
         </div>
         <form className="flex-auto p-6">
           <div className="flex flex-wrap">
-            <h1 className="flex-auto text-lg font-semibold text-slate-900">
+            <h1 className={`flex-auto text-lg font-semibold text-slate-900 ${IsDarkMode && "text-white"}`}>
               {product.title}
             </h1>
-            <div className="text-lg font-semibold text-slate-500">
+            <div className={`text-lg font-semibold text-slate-500 ${IsDarkMode && "text-gray-500"}`}>
               ${product.price}
             </div>
-            <div className="w-full flex-none text-sm font-medium text-slate-700 mt-2">
+            <div className={`w-full flex-none text-sm font-medium text-slate-700 mt-2 ${IsDarkMode && "text-white"}`}>
               Review {product.rating.rate}/5 ({product.rating.count})
             </div>
           </div>
@@ -41,14 +52,14 @@ const DetailProduct = () => {
           </div>
           <div className="flex space-x-4 mb-6 text-sm font-medium">
             <div className="flex-auto flex space-x-4">
-              <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" type="submit">
+              <button onClick={() => dispatch(addToCart({id: product.id, qty: 1}))} className="h-10 px-6 font-semibold rounded-md bg-black text-white" type="button">
                 Buy now
               </button>
-              <button className="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900" type="button">
+              <button className={`h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900 ${IsDarkMode && "bg-black text-white"}`} type="button">
                 Add to bag
               </button>
             </div>
-            <button className="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200" type="button" aria-label="Like">
+            <button className="flex-none flex items-center justify-center w-9 h-9 rounded-md text-pink-500 border border-slate-200" type="button" aria-label="Like">
               <svg width="20" height="20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
               </svg>
